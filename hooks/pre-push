@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -e
+
+exit=1
+while read -r lb _; do
+	[ "$lb" = "refs/heads/master" ] && exit=0
+done
+
+[ $exit -eq 0 ] || exit 0
+
+git subtree split --prefix www -b www
+git push -f origin www:www
+git push -f origin www:gh-pages
+git branch -D www
